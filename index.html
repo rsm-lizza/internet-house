@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Internet House</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #f5f7fa;
+        font-family: Arial, sans-serif;
+        color: #222;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 650px;
+        margin: auto;
+        padding: 18px 14px 35px;
+    }
+
+    /* ================= HEADER ================= */
+
+    .header {
+        background: #159fda;
+        padding: 24px 18px;
+        border-radius: 0 0 10px 10px;
+        margin-bottom: 18px;
+        color: white;
+    }
+
+    .header h1 {
+        margin: 0;
+        font-size: 23px;
+        font-weight: 700;
+        letter-spacing: .5px;
+    }
+
+    .username {
+        margin-top: 4px;
+        font-size: 11px;
+        color: rgba(255,255,255,.72);
+        letter-spacing: 1px;
+    }
+
+    /* ================= OPERATOR ================= */
+
+    .operator {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 14px;
+    }
+
+    .operator button {
+        flex: 1;
+        padding: 10px 5px;
+        border: 1px solid #d5dce4;
+        border-radius: 9px;
+        background: white;
+        color: #333;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .operator button.active {
+        background: #159fda;
+        color: white;
+        border-color: #159fda;
+    }
+
+    /* ================= FILTER ================= */
+
+    .filter-area {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        margin-bottom: 14px;
+    }
+
+    .filter-area button {
+        white-space: nowrap;
+        background: white;
+        border: 1px solid #d5dce4;
+        border-radius: 9px;
+        padding: 9px 13px;
+        font-size: 11px;
+        color: #333;
+        cursor: pointer;
+    }
+
+    .filter-area button.active {
+        background: #e6f6fd;
+        border-color: #159fda;
+        color: #0787bd;
+    }
+
+    /* ================= INFO ================= */
+
+    .info {
+        font-size: 12px;
+        color: #777;
+        margin: 8px 2px 10px;
+    }
+
+    /* ================= PRODUCT ================= */
+
+    .products {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .product {
+        position: relative;
+        background: white;
+        border: 1px solid #d8dde3;
+        border-radius: 12px;
+        padding: 13px 14px;
+        cursor: pointer;
+        transition: .15s;
+    }
+
+    .product:hover {
+        border-color: #159fda;
+    }
+
+    .product.selected {
+        border: 2px solid #159fda;
+        background: #f2fbff;
+    }
+
+    .product-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .product-code {
+        font-size: 14px;
+        font-weight: 700;
+        color: #222;
+    }
+
+    .price {
+        color: #078fca;
+        font-size: 14px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .product-info {
+        margin-top: 6px;
+        font-size: 11px;
+        color: #6d6d6d;
+        line-height: 1.5;
+        padding-right: 60px;
+    }
+
+    .active-time {
+        margin-top: 4px;
+        font-size: 10px;
+        color: #999;
+    }
+
+    /* tanda centang ketika dipilih */
+
+    .check {
+        display: none;
+        position: absolute;
+        right: 12px;
+        bottom: 9px;
+        font-size: 11px;
+        color: #159fda;
+        font-weight: bold;
+    }
+
+    .product.selected .check {
+        display: block;
+    }
+
+    /* ================= LANJUTKAN ================= */
+
+    .continue {
+        width: 100%;
+        margin-top: 18px;
+        padding: 14px;
+        border: none;
+        border-radius: 10px;
+        background: #d9dce0;
+        color: #777;
+        font-size: 13px;
+        font-weight: bold;
+        cursor: not-allowed;
+    }
+
+    .continue.ready {
+        background: #159fda;
+        color: white;
+        cursor: pointer;
+    }
+
+    /* ================= EMPTY ================= */
+
+    .empty {
+        background: white;
+        border-radius: 10px;
+        padding: 25px;
+        text-align: center;
+        color: #888;
+        font-size: 12px;
+    }
+
+    /* ================= FOOTER ================= */
+
+    .footer {
+        text-align: center;
+        margin-top: 22px;
+        color: #aaa;
+        font-size: 10px;
+    }
+
+</style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <div class="header">
+        <h1>INTERNET HOUSE</h1>
+        <div class="username">rsm_lz</div>
+    </div>
+
+
+    <!-- OPERATOR -->
+
+    <div class="operator">
+
+        <button class="active" onclick="gantiOperator('AXIS', this)">
+            AXIS
+        </button>
+
+        <button onclick="gantiOperator('TRI', this)">
+            TRI
+        </button>
+
+        <button onclick="gantiOperator('TELKOMSEL', this)">
+            TELKOMSEL
+        </button>
+
+    </div>
+
+
+    <!-- FILTER -->
+
+    <div class="filter-area" id="filterArea">
+    </div>
+
+
+    <div class="info">
+        Pilih salah satu paket internet
+    </div>
+
+
+    <!-- PRODUK -->
+
+    <div class="products" id="products">
+    </div>
+
+
+    <!-- LANJUTKAN -->
+
+    <button
+        class="continue"
+        id="continueButton"
+        onclick="lanjutkan()"
+        disabled>
+        LANJUTKAN
+    </button>
+
+
+    <div class="footer">
+        INTERNET HOUSE • rsm_lz
+    </div>
+
+</div>
+
+
+
+<script>
+
+/* =====================================================
+   DATA PAKET
+===================================================== */
+
+const data = {
+
+    AXIS: [
+
+        {
+            kode: "AXM1HR",
+            kuota: "8GB",
+            masa: "1HR",
+            harga: 8000
+        },
+
+        {
+            kode: "AXM21",
+            kuota: "15GB + LOKAL",
+            masa: "1HR",
+            harga: 9000
+        },
+
+        {
+            kode: "AXM52",
+            kuota: "5GB + LOKAL",
+            masa: "2HR",
+            harga: 11000
+        },
+
+        {
+            kode: "AX15M",
+            kuota: "3GB + LOKAL",
+            masa: "3HR",
+            harga: 13000
+        },
+
+        {
+            kode: "AXM82",
+            kuota: "7GB + LOKAL",
+            masa: "2HR",
+            harga: 12000
+        },
+
+        {
+            kode: "AX1M",
+            kuota: "5GB + LOKAL",
+            masa: "3HR",
+            harga: 13200
+        },
+
+        {
+            kode: "AXM123",
+            kuota: "13GB + LOKAL",
+            masa: "2HR",
+            harga: 12000
+        },
+
+        {
+            kode: "ONYOU1GB5H",
+            kuota: "1GB + LOKAL",
+            masa: "5HR",
+            harga: 15000
+        },
+
+        {
+            kode: "AX11BOY",
+            kuota: "4GB + LOKAL",
+            masa: "5HR",
+            harga: 15000
+        },
+
+        {
+            kode: "AXM17",
+            kuota: "3GB + LOKAL",
+            masa: "7HR",
+            harga: 20000
+        },
+
+        {
+            kode: "AX43M",
+            kuota: "9GB + LOKAL",
+            masa: "3HR",
+            harga: 15000
+        },
+
+        {
+            kode: "AX2M",
+            kuota: "5GB + LOKAL",
+            masa: "5HR",
+            harga: 16000
+        },
+
+        {
+            kode: "AX15GB3H",
+            kuota: "12,5GB + LOKAL",
+            masa: "3HR",
+            harga: 17000
+        },
+
+        {
+            kode: "AXM47",
+            kuota: "6GB + LOKAL",
+            masa: "7HR",
+            harga: 20000
+        },
+
+        {
+            kode: "AXM173",
+            kuota: "17GB + LOKAL",
+            masa: "3HR",
+            harga: 18000
+        },
+
+        {
+            kode: "AXM85",
+            kuota: "8GB + LOKAL",
+            masa: "5HR",
+            harga: 19000
+        },
+
+        {
+            kode: "AXM314",
+            kuota: "3GB + LOKAL",
+            masa: "14HR",
+            harga: 24000
+        },
+
+        {
+            kode: "AXM67",
+            kuota: "6GB + LOKAL",
+            masa: "7HR",
+            harga: 20000
+        },
+
+        {
+            kode: "AXM4",
+            kuota: "4GB + LOKAL",
+            masa: "15HR",
+            harga: 24000
+        },
+
+        {
+            kode: "AXM2",
+            kuota: "10GB + LOKAL",
+            masa: "7HR",
+            harga: 25000
+        },
+
+        {
+            kode: "AX3M",
+            kuota: "16GB + LOKAL",
+            masa: "5HR",
+            harga: 26000
+        },
+
+        {
+            kode: "AXM87",
+            kuota: "17GB + LOKAL",
+            masa: "7HR",
+            harga: 28000
+        },
+
+        {
+            kode: "AX5M",
+            kuota: "24GB + LOKAL",
+            masa: "5HR",
+            harga: 27000
+        },
+
+        {
+            kode: "AX5M",
+            kuota: "24GB + LOKAL",
+            masa: "5HR",
+            harga: 27500
+        },
+
+        {
+            kode: "AXM3",
+            kuota: "10GB + LOKAL",
+            masa: "14HR",
+            harga: 35000
+        },
+
+        {
+            kode: "AXM117",
+            kuota: "23GB + LOKAL",
+            masa: "7HR",
+            harga: 34000
+        },
+
+        {
+            kode: "AXM325",
+            kuota: "32GB + LOKAL",
+            masa: "5HR",
+            harga: 34000
+        },
+
+        {
+            kode: "AXM505",
+            kuota: "50GB",
+            masa: "5HR",
+            harga: 36000
+        },
+
+        {
+            kode: "AXM1514",
+            kuota: "15GB + LOKAL",
+            masa: "14HR",
+            harga: 41000
+        },
+
+        {
+            kode: "AXM457",
+            kuota: "45GB",
+            masa: "7HR",
+            harga: 45000
+        },
+
+        {
+            kode: "AXM5",
+            kuota: "25GB + LOKAL",
+            masa: "14HR",
+            harga: 48000
+        },
+
+        {
+            kode: "AXM3614",
+            kuota: "40GB + LOKAL",
+            masa: "14HR",
+            harga: 56000
+        }
+
+    ],
+
+
+    /* =================================================
+       TRI
+    ================================================= */
+
+    TRI: [
+
+        {
+            kode: "TRHM2GB1",
+            kuota: "2GB + 0,5 LOKAL",
+            masa: "1HR",
+            harga: 8000
+        },
+
+        {
+            kode: "TRHM5GB1",
+            kuota: "10GB",
+            masa: "1HR",
+            harga: 9000
+        },
+
+        {
+            kode: "TRHM5GB2",
+            kuota: "10GB",
+            masa: "2HR",
+            harga: 12000
+        },
+
+        {
+            kode: "TRHM6GB3",
+            kuota: "6GB",
+            masa: "3HR",
+            harga: 14000
+        },
+
+        {
+            kode: "TRHM11GB3",
+            kuota: "11GB",
+            masa: "3HR",
+            harga: 15000
+        },
+
+        {
+            kode: "RM1NI1",
+            kuota: "2GB",
+            masa: "5HR",
+            harga: 13000
+        },
+
+        {
+            kode: "TRHM3GB5",
+            kuota: "7GB",
+            masa: "5HR",
+            harga: 16000
+        },
+
+        {
+            kode: "TRHM6GB5",
+            kuota: "10GB",
+            masa: "5HR",
+            harga: 19000
+        },
+
+        {
+            kode: "TRHM11GB5",
+            kuota: "12GB",
+            masa: "5HR",
+            harga: 21000
+        },
+
+        {
+            kode: "RMINI2",
+            kuota: "3GB",
+            masa: "7HR",
+            harga: 19500
+        },
+
+        {
+            kode: "TRHM5GB7",
+            kuota: "6GB",
+            masa: "7HR",
+            harga: 22000
+        },
+
+        {
+            kode: "TRHM15GB7",
+            kuota: "15GB",
+            masa: "7HR",
+            harga: 23000
+        },
+
+        {
+            kode: "TRHM25GB7",
+            kuota: "25GB",
+            masa: "7HR",
+            harga: 29500
+        },
+
+        {
+            kode: "TRHM3GB14",
+            kuota: "3GB",
+            masa: "14HR",
+            harga: 23000
+        },
+
+        {
+            kode: "TRHM7GB14",
+            kuota: "8GB",
+            masa: "14HR",
+            harga: 25000
+        },
+
+        {
+            kode: "TRHM10GB14",
+            kuota: "12GB",
+            masa: "14HR",
+            harga: 29000
+        }
+
+    ],
+
+
+    /* =================================================
+       TELKOMSEL
+    ================================================= */
+
+    TELKOMSEL: [
+
+        {
+            kode: "T3G1H",
+            kuota: "3,5GB",
+            masa: "1HR",
+            harga: 12500
+        },
+
+        {
+            kode: "T1G1H",
+            kuota: "1GB",
+            masa: "1HR",
+            harga: 10000
+        },
+
+        {
+            kode: "T8G1H",
+            kuota: "8GB",
+            masa: "1HR",
+            harga: 12000
+        },
+
+        {
+            kode: "T15G3H",
+            kuota: "1,5GB",
+            masa: "3HR",
+            harga: 13000
+        },
+
+        {
+            kode: "T1G1H",
+            kuota: "1GB",
+            masa: "3HR",
+            harga: 13000
+        },
+
+        {
+            kode: "T4G1H",
+            kuota: "4GB",
+            masa: "1HR",
+            harga: 13000
+        },
+
+        {
+            kode: "T2G3H",
+            kuota: "2GB",
+            masa: "3HR",
+            harga: 14000
+        },
+
+        {
+            kode: "T25G3H",
+            kuota: "2,5GB",
+            masa: "3HR",
+            harga: 14000
+        },
+
+        {
+            kode: "T3G3H",
+            kuota: "3GB",
+            masa: "3HR",
+            harga: 19000
+        },
+
+        {
+            kode: "T1HG7H",
+            kuota: "1GB",
+            masa: "7HR",
+            harga: 15000
+        },
+
+        {
+            kode: "T35G3H",
+            kuota: "3,5GB",
+            masa: "3HR",
+            harga: 20000
+        },
+
+        {
+            kode: "T15G14H",
+            kuota: "1,5GB",
+            masa: "14HR",
+            harga: 23500
+        },
+
+        {
+            kode: "T15G7H",
+            kuota: "1,5GB",
+            masa: "7HR",
+            harga: 23000
+        },
+
+        {
+            kode: "T2G14H",
+            kuota: "2GB",
+            masa: "14HR",
+            harga: 24000
+        },
+
+        {
+            kode: "T35G7H",
+            kuota: "3,5GB",
+            masa: "7HR",
+            harga: 27000
+        },
+
+        {
+            kode: "T6G7H",
+            kuota: "6GB",
+            masa: "7HR",
+            harga: 28000
+        },
+
+        {
+            kode: "T5G7H",
+            kuota: "5GB",
+            masa: "7HR",
+            harga: 27000
+        },
+
+        {
+            kode: "T7G7H",
+            kuota: "7GB",
+            masa: "7HR",
+            harga: 28500
+        },
+
+        {
+            kode: "T8G3H",
+            kuota: "8GB",
+            masa: "3HR",
+            harga: 36000
+        },
+
+        {
+            kode: "T20G3H",
+            kuota: "20GB",
+            masa: "3HR",
+            harga: 54000
+        },
+
+        {
+            kode: "T17G3H",
+            kuota: "17GB",
+            masa: "3HR",
+            harga: 60000
+        },
+
+        {
+            kode: "T22G3H",
+            kuota: "22GB",
+            masa: "3HR",
+            harga: 66000
+        },
+
+        {
+            kode: "T17G7H",
+            kuota: "17GB",
+            masa: "7HR",
+            harga: 75500
+        },
+
+        {
+            kode: "T30G7H",
+            kuota: "30GB",
+            masa: "7HR",
+            harga: 86000
+        },
+
+        {
+            kode: "T40G7H",
+            kuota: "49GB",
+            masa: "7HR",
+            harga: 95000
+        }
+
+    ]
+
+};
+
+
+/* =====================================================
+   PENGATURAN
+===================================================== */
+
+let operatorSekarang = "AXIS";
+let filterSekarang = "SEMUA";
+let produkTerpilih = null;
+
+
+/* =====================================================
+   FORMAT HARGA
+===================================================== */
+
+function formatHarga(harga) {
+    return "Rp" + harga.toLocaleString("id-ID");
+}
+
+
+/* =====================================================
+   GANTI OPERATOR
+===================================================== */
+
+function gantiOperator(operator, tombol) {
+
+    operatorSekarang = operator;
+    filterSekarang = "SEMUA";
+    produkTerpilih = null;
+
+    document.querySelectorAll(".operator button")
+        .forEach(btn => btn.classList.remove("active"));
+
+    tombol.classList.add("active");
+
+    tampilkanFilter();
+    tampilkanProduk();
+    updateButton();
+
+}
+
+
+/* =====================================================
+   FILTER
+===================================================== */
+
+function tampilkanFilter() {
+
+    const area = document.getElementById("filterArea");
+
+    const produk = data[operatorSekarang];
+
+    const masaAktif = [
+        ...new Set(produk.map(item => item.masa))
+    ];
+
+    area.innerHTML = "";
+
+    const semua = document.createElement("button");
+
+    semua.innerText = "Tampilkan Semua";
+
+    if (filterSekarang === "SEMUA") {
+        semua.classList.add("active");
+    }
+
+    semua.onclick = function() {
+        filterSekarang = "SEMUA";
+        produkTerpilih = null;
+        tampilkanFilter();
+        tampilkanProduk();
+        updateButton();
+    };
+
+    area.appendChild(semua);
+
+
+    masaAktif.forEach(masa => {
+
+        const button = document.createElement("button");
+
+        button.innerText = masa;
+
+        if (filterSekarang === masa) {
+            button.classList.add("active");
+        }
+
+        button.onclick = function() {
+
+            filterSekarang = masa;
+            produkTerpilih = null;
+
+            tampilkanFilter();
+            tampilkanProduk();
+            updateButton();
+
+        };
+
+        area.appendChild(button);
+
+    });
+
+}
+
+
+/* =====================================================
+   TAMPILKAN PRODUK
+===================================================== */
+
+function tampilkanProduk() {
+
+    const container = document.getElementById("products");
+
+    let produk = data[operatorSekarang];
+
+    if (filterSekarang !== "SEMUA") {
+
+        produk = produk.filter(
+            item => item.masa === filterSekarang
+        );
+
+    }
+
+    container.innerHTML = "";
+
+
+    if (produk.length === 0) {
+
+        container.innerHTML = `
+            <div class="empty">
+                Paket tidak tersedia.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    produk.forEach((item, index) => {
+
+        const div = document.createElement("div");
+
+        div.className = "product";
+
+        div.innerHTML = `
+
+            <div class="product-top">
+
+                <div class="product-code">
+                    ${item.kode}
+                </div>
+
+                <div class="price">
+                    ${formatHarga(item.harga)}
+                </div>
+
+            </div>
+
+            <div class="product-info">
+                ${operatorSekarang} ${item.kuota}
+            </div>
+
+            <div class="active-time">
+                Masa aktif ${item.masa}
+            </div>
+
+            <div class="check">
+                ✓ Dipilih
+            </div>
+        `;
+
+
+        div.onclick = function() {
+
+            document.querySelectorAll(".product")
+                .forEach(p => p.classList.remove("selected"));
+
+            div.classList.add("selected");
+
+            produkTerpilih = item;
+
+            updateButton();
+
+        };
+
+
+        container.appendChild(div);
+
+    });
+
+}
+
+
+/* =====================================================
+   TOMBOL LANJUTKAN
+===================================================== */
+
+function updateButton() {
+
+    const button = document.getElementById("continueButton");
+
+    if (produkTerpilih) {
+
+        button.disabled = false;
+        button.classList.add("ready");
+
+    } else {
+
+        button.disabled = true;
+        button.classList.remove("ready");
+
+    }
+
+}
+
+
+/* =====================================================
+   KIRIM KE WHATSAPP
+===================================================== */
+
+function lanjutkan() {
+
+    if (!produkTerpilih) {
+        return;
+    }
+
+
+    /*
+       GANTI NOMOR DI BAWAH INI.
+
+       Contoh nomor:
+       081234567890
+
+       Ditulis menjadi:
+       6281234567890
+    */
+
+    const nomorWhatsApp = "628xxxxxxxxxx";
+
+
+    const pesan =
+
+`Halo, saya ingin membeli paket internet.
+
+Operator: ${operatorSekarang}
+Kode: ${produkTerpilih.kode}
+Kuota: ${produkTerpilih.kuota}
+Masa aktif: ${produkTerpilih.masa}
+Harga: ${formatHarga(produkTerpilih.harga)}
+
+Mohon diproses. Terima kasih 😊`;
+
+
+    const link =
+        "https://wa.me/" +
+        nomorWhatsApp +
+        "?text=" +
+        encodeURIComponent(pesan);
+
+
+    window.open(link, "_blank");
+
+}
+
+
+/* =====================================================
+   MULAI WEBSITE
+===================================================== */
+
+tampilkanFilter();
+tampilkanProduk();
+updateButton();
+
+</script>
+
+</body>
+</html>
