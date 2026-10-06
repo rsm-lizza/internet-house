@@ -140,6 +140,16 @@
         transition: .15s;
     }
 
+   .favorite-btn {
+       position: absolute;
+       top: 10px;
+       right: 10px;
+       border: none;
+       background: none;
+       font-size: 22px;
+       cursor: pointer;
+}
+
     .product:hover {
         border-color: #159fda;
     }
@@ -977,9 +987,7 @@ function tampilkanProduk() {
     }
 
     container.innerHTML = "";
-         const favoritTersimpan = JSON.parse(localStorage.getItem("internetHouseFavorites") || "[]");
-
-
+        
     if (produk.length === 0) {
 
         container.innerHTML = `
@@ -1010,11 +1018,16 @@ function tampilkanProduk() {
                     ${formatHarga(item.harga)}
                 </div>
 
+                <button class="favorite-btn" onclick="event.stopPropagation();">
+                    ♡
+                </button>
+
             </div>
 
             <div class="product-info">
                 ${operatorSekarang} ${item.kuota}
             </div>
+            
 
             <div class="active-time">
                 Masa aktif ${item.masa}
