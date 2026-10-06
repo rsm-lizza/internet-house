@@ -873,6 +873,7 @@ const data = {
 let operatorSekarang = "AXIS";
 let filterSekarang = "SEMUA";
 let produkTerpilih = null;
+let favorit = JSON.parse(localStorage.getItem("internetHouseFavorit")) || [];
 
 
 /* =====================================================
@@ -1019,9 +1020,10 @@ function tampilkanProduk() {
                     ${formatHarga(item.harga)}
                 </div>
 
-                <button class="favorite-btn" onclick="event.stopPropagation();">
+                <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite(item, this);">
                     ♡
                 </button>
+
 
             </div>
 
@@ -1059,6 +1061,26 @@ function tampilkanProduk() {
     });
 
 }
+
+   function toggleFavorite(item, tombol) {
+
+    const index = favorit.findIndex(
+        f => f.kode === item.kode
+    );
+
+    if (index === -1) {
+        favorit.push(item);
+        tombol.textContent = "♥";
+    } else {
+        favorit.splice(index, 1);
+        tombol.textContent = "♡";
+    }
+
+    localStorage.setItem(
+        "internetHouseFavorit",
+        JSON.stringify(favorit)
+    );
+} 
 
 
 /* =====================================================
