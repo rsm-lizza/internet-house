@@ -73,7 +73,19 @@
         background: #159fda;
         color: white;
         border-color: #159fda;
+    } 
+
+   .operator button.tri.active {
+        background: #18a558;
+        border-color: #18a558;
     }
+
+    .operator button.telkomsel.active {
+        background: #e53935;
+        border-color: #e53935;
+   }
+
+ 
 
     /* ================= FILTER ================= */
 
@@ -248,15 +260,15 @@
 
     <div class="operator">
 
-        <button class="active" onclick="gantiOperator('AXIS', this)">
+        <button class="active axis" onclick="gantiOperator('AXIS', this)">
             AXIS
         </button>
 
-        <button onclick="gantiOperator('TRI', this)">
+        <button class="tri" onclick="gantiOperator('TRI', this)">
             TRI
         </button>
 
-        <button onclick="gantiOperator('TELKOMSEL', this)">
+        <button class="telkomsel" onclick="gantiOperator('TELKOMSEL', this)">
             TELKOMSEL
         </button>
 
@@ -355,7 +367,7 @@ const data = {
             kode: "AXM123",
             kuota: "13GB + LOKAL",
             masa: "2HR",
-            harga: 12000
+            harga: 13000
         },
 
         {
@@ -897,7 +909,7 @@ function tampilkanFilter() {
         ...new Set(produk.map(item => item.masa))
     ];
 
-    area.innerHTML = "";
+    area.innerAXIS = "";
 
     const semua = document.createElement("button");
 
@@ -1068,15 +1080,7 @@ function lanjutkan() {
     }
 
 
-    /*
-       GANTI NOMOR DI BAWAH INI.
 
-       Contoh nomor:
-       081234567890
-
-       Ditulis menjadi:
-       6281234567890
-    */
 
     const nomorWhatsApp = "6283830595210";
 
@@ -1090,8 +1094,9 @@ Kode: ${produkTerpilih.kode}
 Kuota: ${produkTerpilih.kuota}
 Masa aktif: ${produkTerpilih.masa}
 Harga: ${formatHarga(produkTerpilih.harga)}
+Nomor : (opsional)
 
-Mohon diproses. Terima kasih 😊`;
+Terima kasih 😊`;
 
 
     const link =
