@@ -977,6 +977,7 @@ function tampilkanProduk() {
     }
 
     container.innerHTML = "";
+         const favoritTersimpan = JSON.parse(localStorage.getItem("internetHouseFavorites") || "[]");
 
 
     if (produk.length === 0) {
