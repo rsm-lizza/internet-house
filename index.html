@@ -282,6 +282,9 @@
 
     </div>
 
+         <button class="show-favorites" onclick="tampilkanFavorit()">
+            ♡ Favorit
+         </button>
 
     <!-- FILTER -->
 
@@ -1078,6 +1081,58 @@ function tampilkanProduk() {
         JSON.stringify(favorit)
     );
 } 
+   function tampilkanFavorit() {
+
+    const container = document.getElementById("products");
+
+    container.innerHTML = "";
+
+    if (favorit.length === 0) {
+        container.innerHTML = `
+            <div class="empty">
+                Belum ada paket favorit.
+            </div>
+        `;
+        return;
+    }
+
+    favorit.forEach(item => {
+
+        const div = document.createElement("div");
+
+        div.className = "product";
+
+        div.innerHTML = `
+            <div class="product-top">
+
+                <div class="product-code">
+                    ${item.kode}
+                </div>
+
+                <div class="price">
+                    ${formatHarga(item.harga)}
+                </div>
+
+                <button class="favorite-btn"
+                    onclick="event.stopPropagation(); toggleFavorite(item, this);">
+                    ♥
+                </button>
+
+            </div>
+
+            <div class="product-info">
+                ${item.kuota}
+            </div>
+
+            <div class="active-time">
+                Masa aktif ${item.masa}
+            </div>
+        `;
+
+        container.appendChild(div);
+
+    });
+}
 
 
 /* =====================================================
